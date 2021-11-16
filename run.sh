@@ -2,7 +2,10 @@
 
 set -e
 
-config_api () {
+POD_FILE=/tmp/pods.json
+PODS_DISCOVERED_FILE=/tmp/pods_discovered.txt
+
+refresh_api () {
 # Point to the internal API server hostname
 APISERVER=https://kubernetes.default.svc
 
@@ -25,17 +28,14 @@ CACERT=${SERVICEACCOUNT}/ca.crt
 CURL_COMMAND=$(which curl)
 BASE_URL="$APISERVER/api/v1/namespaces/$NAMESPACE"
 
-POD_FILE=/tmp/pods.json
-}
 
-refresh_api () {
-config_api
 $CURL_COMMAND --cacert ${CACERT} \
 	--header "$HEADER" \
-	-q -s \
-	-X GET "$BASE_URL"/pods \
-	> $POD_FILE
+	-s \
+	-o $POD_FILE \
+	-X GET "$BASE_URL"/pods
 }
+
 
 if [ -z "$LABELS" ]; then
 		echo "No labels specified"
@@ -65,8 +65,9 @@ jq_program='
 |   @tsv
 '
 
-PODS_DISCOVERED_FILE=/tmp/pods_discovered.txt
 jq -r "$jq_program" < $POD_FILE > $PODS_DISCOVERED_FILE
+echo "Pods discovered: "
+cat "$PODS_DISCOVERED_FILE"
 
 echo "Running pods: "
 awk '/Running/ {print $1}' < $PODS_DISCOVERED_FILE
@@ -109,7 +110,6 @@ while true; do
 		done
 	MATCH=0
 	done < $PODS_DISCOVERED_FILE
-	# echo a timestamp
 	echo "Waiting $WAIT_TIME seconds; timestamp: $(date -u +%Y%m%d%H%M%S)"
 	echo ""
 	sleep $WAIT_TIME
