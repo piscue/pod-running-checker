@@ -45,7 +45,7 @@ LABELS_FILE=/tmp/labels.txt
 # shellcheck disable=SC2016
 AWK_SPLIT_LABELS='{ for (i = 1; i <= NF; ++i ) print $i }'
 echo "$LABELS" | awk -F, "$AWK_SPLIT_LABELS" > $LABELS_FILE
-NUMBER_OF_LABELS_TO_MATCH=$(wc -l < "$LABELS_FILE") # TODO don't match
+NUMBER_OF_LABELS_TO_MATCH=$(wc -l < "$LABELS_FILE")
 echo "$NUMBER_OF_LABELS_TO_MATCH labels to match with running pods: "
 cat $LABELS_FILE
 echo ""
@@ -66,8 +66,6 @@ jq_program='
 '
 
 jq -r "$jq_program" < $POD_FILE > $PODS_DISCOVERED_FILE
-echo "Pods discovered: "
-cat "$PODS_DISCOVERED_FILE"
 
 echo "Running pods: "
 awk '/Running/ {print $1}' < $PODS_DISCOVERED_FILE
@@ -75,12 +73,12 @@ echo ""
 }
 
 
-# Loop until all the labels has been match
 if [ -z "$WAIT_TIME" ]; then
 	WAIT_TIME=10
 fi
 
 MATCH=0
+# Loop until all the labels has been match
 while true; do
 	refresh_api
 	discover_pods
