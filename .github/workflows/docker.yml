@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'main'
+    tags:
+      - '*'
     paths-ignore:
       - 'README.md'
   pull_request:
@@ -49,7 +51,7 @@ jobs:
           images: |
             ${{ github.repository }}
           flavor: |
-            latest=false
+            latest=auto
           tags: |
             type=ref,event=branch
             type=ref,event=pr
