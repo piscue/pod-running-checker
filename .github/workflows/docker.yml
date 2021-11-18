@@ -47,7 +47,7 @@ jobs:
         uses: docker/metadata-action@v3.4.1
         with:
           images: |
-            ${{ GITHUB_REPOSITORY }}
+            ${{ github.repository }}
           flavor: |
             latest=false
           tags: |
