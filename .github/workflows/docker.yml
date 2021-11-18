@@ -64,7 +64,8 @@ jobs:
           context: .
           # push: ${{ github.ref == 'refs/heads/main' }}
           push: true
-          tags: ${{ github.event.repository.name }}:${{ github.head_ref }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
 
       - name: Move cache
         run: |
