@@ -64,6 +64,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-new
           context: .
           push: ${{ github.ref == 'refs/heads/main' }}
+          push: true
           tags: ${{ github.event.repository.name }}:${{ github.head_ref }}
 
       - name: Move cache
