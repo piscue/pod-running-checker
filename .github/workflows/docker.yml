@@ -61,7 +61,6 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
-          context: .
           # push: ${{ github.ref == 'refs/heads/main' }}
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
