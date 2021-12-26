@@ -49,7 +49,7 @@ jobs:
         uses: docker/metadata-action@v3.4.1
         with:
           images: |
-            ${{ github.repository }}
+            ${{ secrets.DOCKER_HUB_ACCOUNT }}/${{ secrets.DOCKER_HUB_IMAGE }}
           flavor: |
             latest=auto
           tags: |
