@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: build
+name: trivi
 
 on:
   push:
@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build-scan:
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
@@ -30,12 +30,12 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+          docker build -t pod-running-checker:${{ github.sha }} .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
         with:
-          image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+          image-ref: 'pod-running-checker:${{ github.sha }}'
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
