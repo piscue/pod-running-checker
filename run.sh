@@ -67,9 +67,6 @@ jq_program='
 
 jq -r "$jq_program" < $POD_FILE > $PODS_DISCOVERED_FILE
 
-echo "Running pods: "
-awk '/Running/ {print $1}' < $PODS_DISCOVERED_FILE
-echo ""
 }
 
 
@@ -110,5 +107,5 @@ while true; do
 	done < $PODS_DISCOVERED_FILE
 	echo "Waiting $WAIT_TIME seconds; timestamp: $(date -u +%Y%m%d%H%M%S)"
 	echo ""
-	sleep $WAIT_TIME
+	sleep "$WAIT_TIME"
 done
