@@ -86,7 +86,6 @@ while true; do
 		for POD_LABEL in $(echo "$POD_LABELS" | awk -F, "$AWK_SPLIT_LABELS") ; do
 			while read -r LABEL_TO_MATCH; do
 				if [ "$POD_LABEL" = "$LABEL_TO_MATCH" ]; then
-					echo "MATCH: $POD_LABEL"
 					MATCH=$((MATCH+1))
 					if [ "$MATCH" -eq "$NUMBER_OF_LABELS_TO_MATCH" ]; then
 						if [  "$POD_STATUS" = "Running" ]; then
